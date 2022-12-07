@@ -125,7 +125,12 @@ SELECT
     tg.parent_vertical_concat,
     -- This filter is used to clean the data. It removes all orders that did not belong to the correct target_group, variant, scheme_id combination as dictated by the experiment"s setup
     CASE WHEN COALESCE(tg.tg_name, "Non_TG") = "Non_TG" OR vs.tg_var_scheme_concat LIKE CONCAT("%", COALESCE(tg.tg_name, "Non_TG"), " | ", a.variant, " | ", a.scheme_id, "%") THEN "Keep" ELSE "Drop" END AS keep_drop_flag,
-    CASE WHEN COALESCE(b.target_group, "Non_TG") = "Non_TG" OR vs.tg_var_scheme_concat LIKE CONCAT("%", COALESCE(b.target_group, "Non_TG"), " | ", a.variant, " | ", a.scheme_id, "%") THEN "Keep" ELSE "Drop" END AS keep_drop_flag_bi
+    CASE WHEN 
+      COALESCE(b.target_group, "Non_TG") = "Non_TG"
+      OR
+      vs.tg_var_scheme_concat LIKE CONCAT("%", COALESCE(CONCAT("TG", REGEXP_EXTRACT(b.target_group, r'\d+')), "Non_TG"), " | ", a.variant, " | ", a.scheme_id, "%") THEN "Keep" 
+    ELSE "Drop"
+    END AS keep_drop_flag_bi
 FROM `fulfillment-dwh-production.cl.dps_sessions_mapped_to_orders_v2` a
 LEFT JOIN `fulfillment-dwh-production.cl.dps_ab_test_orders_v2` b ON a.entity_id = b.entity_id AND a.order_id = b.order_id
 LEFT JOIN `fulfillment-dwh-production.curated_data_shared_central_dwh.orders` dwh 
