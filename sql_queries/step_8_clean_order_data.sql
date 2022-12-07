@@ -4,4 +4,4 @@ SELECT
     *
 FROM `dh-logistics-product-ops.pricing.ab_test_individual_orders_augmented_lb_rollout_tests`
 WHERE TRUE
-    AND keep_drop_flag = "Keep"; -- Filter for the orders that have the correct target_group, variant, and scheme ID based on the configuration of the experiment
+    AND keep_drop_flag_bi = "Keep"; -- Filter for the orders that have the correct target_group, variant, and scheme ID based on the configuration of the experiment
