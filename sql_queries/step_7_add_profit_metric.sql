@@ -3,10 +3,11 @@ CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ab_test_individual_ord
 SELECT
   a.*,
   -- Revenue and profit formulas
-  actual_df_paid_by_customer + commission_local + joker_vendor_fee_local + service_fee_local + COALESCE(sof_local, sof_local_cdwh) AS revenue_local,
-  actual_df_paid_by_customer + commission_local + joker_vendor_fee_local + service_fee_local + COALESCE(sof_local, sof_local_cdwh) - delivery_costs_local AS gross_profit_local,
+  SAFE_DIVIDE(actual_df_paid_by_customer, 1 + b.vat_ratio) + commission_local + joker_vendor_fee_local + SAFE_DIVIDE(service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(COALESCE(sof_local, sof_local_cdwh), 1 + b.vat_ratio) AS revenue_local,
+  SAFE_DIVIDE(actual_df_paid_by_customer, 1 + b.vat_ratio) + commission_local + joker_vendor_fee_local + SAFE_DIVIDE(service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(COALESCE(sof_local, sof_local_cdwh), 1 + b.vat_ratio) - delivery_costs_local AS gross_profit_local,
 
 FROM `dh-logistics-product-ops.pricing.ab_test_individual_orders_lb_rollout_tests` a
+INNER JOIN `fulfillment-dwh-production.cl.dps_ab_test_orders_v2` b ON a.entity_id = b.entity_id AND a.platform_order_code = b.platform_order_code
 WHERE TRUE -- Filter for orders from the right parent vertical (restuarants, shop, darkstores, etc.) per experiment
     AND (
       CONCAT(entity_id, " | ", country_code, " | ", test_id, " | ", vendor_vertical_parent) IN ( -- If the parent vertical exists, filter for the right one belonging to the experiment
