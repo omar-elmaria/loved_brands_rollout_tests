@@ -19,4 +19,5 @@ LEFT JOIN UNNEST(ci.zones) zo
 INNER JOIN `dh-logistics-product-ops.pricing.ab_test_zone_ids_lb_rollout_tests` tgt ON p.entity_id = tgt.entity_id AND co.country_code = tgt.country_code AND zo.id = tgt.zone_id 
 WHERE TRUE 
     AND zo.is_active -- Active city
-    AND ci.is_active; -- Active zone
+    AND ci.is_active -- Active zone
+;

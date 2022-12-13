@@ -14,4 +14,5 @@ CROSS JOIN UNNEST(a.matching_vendor_ids) AS vendor_id
 LEFT JOIN UNNEST(test_vertical_parents) parent_vertical
 WHERE TRUE
   AND test_name IN (SELECT DISTINCT test_name FROM `dh-logistics-product-ops.pricing.valid_exp_names_lb_rollout_tests`)
-ORDER BY 1,2;
+ORDER BY 1,2
+;

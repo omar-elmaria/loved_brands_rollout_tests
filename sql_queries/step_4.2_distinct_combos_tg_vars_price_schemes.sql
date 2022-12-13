@@ -7,4 +7,5 @@ SELECT
   test_id,
   ARRAY_TO_STRING(ARRAY_AGG(CONCAT(target_group, " | ", variant, " | ", price_scheme_id)), ", ") AS tg_var_scheme_concat
 FROM `dh-logistics-product-ops.pricing.ab_test_tgs_variants_and_schemes_lb_rollout_tests`
-GROUP BY 1,2,3,4;
+GROUP BY 1,2,3,4
+;

@@ -21,4 +21,5 @@ WHERE TRUE -- Filter for orders from the right parent vertical (restuarants, sho
         FROM `dh-logistics-product-ops.pricing.ab_test_target_groups_lb_rollout_tests`
         WHERE CONCAT(entity_id, " | ", country_code, " | ", test_id, " | ", second_parent_vertical) IS NOT NULL
       )
-    );
+    )
+;

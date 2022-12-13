@@ -69,4 +69,5 @@ SELECT
   b.vertical_type -- Vertical type of the vendor (NOT parent vertical)
 FROM vendor_tg_vertical_mapping_agg a
 LEFT JOIN `fulfillment-dwh-production.curated_data_shared_central_dwh.vendors` b ON a.entity_id = b.global_entity_id AND a.vendor_code = b.vendor_id
-ORDER BY 1,2,3,4,5;
+ORDER BY 1,2,3,4,5
+;

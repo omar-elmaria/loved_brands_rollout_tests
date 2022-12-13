@@ -9,23 +9,6 @@ WITH test_start_and_end_dates AS ( -- Get the start and end dates per test
     test_name,
     test_id
   FROM `dh-logistics-product-ops.pricing.ab_test_zone_ids_lb_rollout_tests`
-),
-
-entities AS (
-    SELECT
-        ent.region,
-        p.entity_id,
-        ent.country_iso,
-        ent.country_name,
-FROM `fulfillment-dwh-production.cl.entities` ent
-LEFT JOIN UNNEST(platforms) p
-INNER JOIN (SELECT DISTINCT entity_id FROM `fulfillment-dwh-production.cl.dps_sessions_mapped_to_orders_v2`) dps ON p.entity_id = dps.entity_id 
-WHERE TRUE
-    AND p.entity_id NOT LIKE "ODR%" -- Eliminate entities starting with DN_ as they are not part of DPS
-    AND p.entity_id NOT LIKE "DN_%" -- Eliminate entities starting with ODR (on-demand riders)
-    AND p.entity_id NOT IN ("FP_DE", "FP_JP") -- Eliminate JP and DE because they are not DH markets any more
-    AND p.entity_id != "TB_SA" -- Eliminate this incorrect entity_id for Saudi
-    AND p.entity_id != "HS_BH" -- Eliminate this incorrect entity_id for Bahrain
 )
 
 SELECT 
@@ -172,7 +155,7 @@ LEFT JOIN `dh-logistics-product-ops.pricing.ab_test_agg_tgs_variants_and_schemes
     AND a.entity_id = vs.entity_id 
     AND a.country_code = vs.country_code 
     AND a.experiment_id = vs.test_id
-INNER JOIN entities ent ON a.entity_id = ent.entity_id -- Get the region associated with every entity_id
+INNER JOIN `dh-logistics-product-ops.pricing.entities_lb_rollout_tests` ent ON a.entity_id = ent.entity_id -- Get the region associated with every entity_id
 WHERE TRUE
     AND a.created_date >= DATE("2022-11-28") -- Filter for tests that started from November 28th, 2022 (date of the first Loved Brands test using the productionized pipeline)
     
@@ -191,4 +174,5 @@ WHERE TRUE
       WHERE CONCAT(entity_id, " | ", country_code, " | ", test_id) IS NOT NULL
     )
     
-    AND ST_CONTAINS(zn.zone_shape, ST_GEOGPOINT(dwh.delivery_location.longitude, dwh.delivery_location.latitude)); -- Filter for orders coming from the target zones
+    AND ST_CONTAINS(zn.zone_shape, ST_GEOGPOINT(dwh.delivery_location.longitude, dwh.delivery_location.latitude)) -- Filter for orders coming from the target zones
+;
