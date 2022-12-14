@@ -1,5 +1,5 @@
 -- Step 9: Retrieve raw session data
-CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ga_sessions_data_lb_rollout_tests` AS
+CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ga_sessions_data_stg_lb_rollout_tests` AS
 WITH raw_sessions_data AS (
   SELECT DISTINCT
     x.created_date, -- Date of the ga session
