@@ -3,8 +3,8 @@ CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ab_test_individual_ord
 SELECT
   a.*,
   -- Revenue and profit formulas
-  IF(is_own_delivery = TRUE, SAFE_DIVIDE(a.actual_df_paid_by_customer, 1 + b.vat_ratio), 0) + a.commission_local + a.joker_vendor_fee_local + SAFE_DIVIDE(a.service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(a.sof_local, 1 + b.vat_ratio) AS revenue_local,
-  IF(is_own_delivery = TRUE, SAFE_DIVIDE(a.actual_df_paid_by_customer, 1 + b.vat_ratio), 0) + a.commission_local + a.joker_vendor_fee_local + SAFE_DIVIDE(a.service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(a.sof_local, 1 + b.vat_ratio) - a.delivery_costs_local AS gross_profit_local,
+  IF(a.is_own_delivery = TRUE, SAFE_DIVIDE(a.actual_df_paid_by_customer, 1 + b.vat_ratio), 0) + a.commission_local + a.joker_vendor_fee_local + SAFE_DIVIDE(a.service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(a.sof_local, 1 + b.vat_ratio) AS revenue_local,
+  IF(a.is_own_delivery = TRUE, SAFE_DIVIDE(a.actual_df_paid_by_customer, 1 + b.vat_ratio), 0) + a.commission_local + a.joker_vendor_fee_local + SAFE_DIVIDE(a.service_fee_local, 1 + b.vat_ratio) + SAFE_DIVIDE(a.sof_local, 1 + b.vat_ratio) - a.delivery_costs_local AS gross_profit_local,
 
 FROM `dh-logistics-product-ops.pricing.ab_test_individual_orders_lb_rollout_tests` a
 INNER JOIN `fulfillment-dwh-production.cl.dps_ab_test_orders_v2` b ON a.entity_id = b.entity_id AND a.platform_order_code = b.platform_order_code

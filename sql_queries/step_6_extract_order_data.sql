@@ -71,7 +71,7 @@ SELECT
     -- Business KPIs (These are the components of profit)
     a.dps_delivery_fee_local,
     a.delivery_fee_local,
-    IF(a.is_delivery_fee_covered_by_discount = TRUE OR a.is_delivery_fee_covered_by_voucher = TRUE, 0, delivery_fee_local) AS delivery_fee_local_incl_disc_and_vouchers,
+    IF(a.is_delivery_fee_covered_by_discount = TRUE OR a.is_delivery_fee_covered_by_voucher = TRUE, 0, a.delivery_fee_local) AS delivery_fee_local_incl_disc_and_vouchers,
     a.dps_travel_time_fee_local,
     a.commission_local,
     a.joker_vendor_fee_local,
