@@ -165,7 +165,7 @@ WHERE TRUE
       WHERE CONCAT(entity_id, " | ", country_code, " | ", test_id, " | ", variant) IS NOT NULL
     )
     
-    AND a.delivery_status = "completed" -- Successful orders
+    AND a.is_sent -- Successful orders
     
     AND CONCAT(a.entity_id, " | ", a.country_code, " | ", a.experiment_id) IN ( -- Filter for the right entity | experiment_id combos. 
       -- The "ab_test_target_groups_lb_rollout_tests" table was specifically chosen from the tables in steps 2-4 because it automatically eliminates tests where there are no matching vendors
