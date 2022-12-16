@@ -71,12 +71,12 @@ SELECT
     -- Business KPIs (These are the components of profit)
     a.dps_delivery_fee_local,
     a.delivery_fee_local,
+    IF(a.is_delivery_fee_covered_by_discount = TRUE OR a.is_delivery_fee_covered_by_voucher = TRUE, 0, delivery_fee_local) AS delivery_fee_local_incl_disc_and_vouchers,
     a.dps_travel_time_fee_local,
     a.commission_local,
     a.joker_vendor_fee_local,
     COALESCE(a.service_fee_local, 0) AS service_fee_local,
-    dwh.value.mov_customer_fee_local AS sof_local_cdwh,
-    IF(a.gfv_local - a.dps_minimum_order_value_local >= 0, 0, COALESCE(dwh.value.mov_customer_fee_local, (a.dps_minimum_order_value_local - a.gfv_local))) AS sof_local,
+    a.mov_customer_fee_local AS sof_local,
     a.delivery_costs_local,
     CASE
         WHEN ent.region IN ("Europe", "Asia") THEN COALESCE( -- Get the delivery fee data of Pandora countries from Pandata tables
