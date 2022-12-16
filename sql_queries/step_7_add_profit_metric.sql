@@ -1,5 +1,5 @@
 -- Step 7: We did not add the profit metrics and the parent_vertical filter to the previous query because some of the fields used below had to be computed first
-CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ab_test_individual_orders_augmented_lb_rollout_tests` AS
+CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ab_test_individual_orders_cleaned_lb_rollout_tests` AS
 SELECT
   a.*,
   -- Revenue and profit formulas

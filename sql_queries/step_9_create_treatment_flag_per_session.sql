@@ -9,7 +9,7 @@ WITH agg_session_stats AS (
     SUM(CASE WHEN is_session_in_treatment_raw = "Y" THEN 1 ELSE 0 END) AS num_instances_with_treated_vendors,
     SUM(CASE WHEN is_session_in_treatment_raw = "N" THEN 1 ELSE 0 END) AS num_instances_with_no_treated_vendors,
     SUM(CASE WHEN is_session_in_treatment_raw = "Unknown" THEN 1 ELSE 0 END) AS num_instances_with_unknown_treatment_vendors,
-  FROM `dh-logistics-product-ops.pricing.ga_sessions_data_stg_lb_rollout_tests`
+  FROM `dh-logistics-product-ops.pricing.ga_sessions_data_lb_rollout_tests`
   GROUP BY 1,2,3
 )
 

@@ -1,5 +1,5 @@
 -- Step 9: Retrieve raw session data
-CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ga_sessions_data_stg_lb_rollout_tests` AS
+CREATE OR REPLACE TABLE `dh-logistics-product-ops.pricing.ga_sessions_data_lb_rollout_tests` AS
 WITH raw_sessions_data AS (
   SELECT DISTINCT
     x.created_date, -- Date of the ga session
@@ -98,5 +98,5 @@ SELECT
     WHEN event_action NOT IN ("home_screen.loaded", "shop_list.loaded") AND target_group_bi NOT IN ("Non Target Group", "Unknown") THEN "Y"
     ELSE NULL
   END AS is_session_in_treatment_raw
-FROM raw_sessions_data
+FROM raw_sessions_data a
 ;
