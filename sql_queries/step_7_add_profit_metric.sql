@@ -23,4 +23,3 @@ WHERE TRUE -- Filter for orders from the right parent vertical (restuarants, sho
       )
     )
 ;
-
