@@ -9,4 +9,5 @@ FROM `fulfillment-dwh-production.cl.dps_experiment_setups` a
 WHERE TRUE
   AND DATE(test_start_date) >= DATE("2022-11-28") -- Filter for tests that started from November 28th, 2022 (date of the first Loved Brands test using the productionized pipeline)
   AND (LOWER(test_name) LIKE "%loved_brands%" OR LOWER(test_name) LIKE "%love_brands%" OR LOWER(test_name) LIKE "%lb%" OR LOWER(test_name) LIKE "%lovedbrands%" OR LOWER(test_name) LIKE "%lovebrands%")
+  AND test_name != "DK_20221213_R_B0_O_Aalborg"
 ;
