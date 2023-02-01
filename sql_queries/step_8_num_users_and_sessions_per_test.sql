@@ -41,11 +41,11 @@ WITH raw_sessions_data AS (
     vert.first_parent_vertical AS first_parent_vertical_test,
     vert.second_parent_vertical AS second_parent_vertical_test,
     e.vertical_type, -- This field is NULL for event types home_screen.loaded and shop_list.loaded 
-    x.sessions.vendor_group_id, -- Target group
+    e.vendor_group_id, -- Target group
     CASE 
-        WHEN x.sessions.vendor_group_id IS NULL AND e.vendor_code IS NULL THEN "Unknown"
-        WHEN x.sessions.vendor_group_id IS NULL AND e.vendor_code IS NOT NULL THEN "Non Target Group"
-        ELSE CONCAT('Target Group ', DENSE_RANK() OVER (PARTITION BY x.entity_id, x.sessions.experiment_id ORDER BY COALESCE(x.sessions.vendor_group_id, 999999)))
+        WHEN e.vendor_group_id IS NULL AND e.vendor_code IS NULL THEN "Unknown"
+        WHEN e.vendor_group_id IS NULL AND e.vendor_code IS NOT NULL THEN "Non Target Group"
+        ELSE CONCAT('Target Group ', DENSE_RANK() OVER (PARTITION BY x.entity_id, x.sessions.experiment_id ORDER BY COALESCE(e.vendor_group_id, 999999)))
     END AS target_group_bi,
     x.sessions.customer_status, -- The customer.tag, indicating whether the customer is new or not
     x.sessions.location, -- The customer.location
